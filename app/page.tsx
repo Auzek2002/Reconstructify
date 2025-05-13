@@ -6,6 +6,7 @@ import { useDropzone } from 'react-dropzone';
 import { FiUpload, FiDatabase, FiZap } from 'react-icons/fi';
 import { BiFingerprint } from 'react-icons/bi';
 import { useEffect } from 'react';
+import Link from "next/link";
 
 export default function Home() {
   const color = useMotionValue('#7c3aed');
@@ -30,6 +31,52 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-purple-50" style={{ backgroundImage }}>
+<nav className="sticky top-0 z-50 w-full border-b border-purple-500/20 bg-gray-900/80 backdrop-blur-lg">
+  <div className="container mx-auto px-4">
+    <div className="flex h-16 items-center justify-between">
+      {/* Left Side - Logo */}
+      <div className="flex items-center space-x-2">
+        <Link href="/" passHref>
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="text-2xl font-bold bg-gradient-to-r from-purple-300 via-pink-300 to-purple-300 bg-clip-text text-transparent cursor-pointer"
+        >
+          Reconstructify AI
+        </motion.span>
+        <motion.span
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          className="absolute inset-0 bg-purple-500/10 blur-3xl rounded-full"
+        />
+        </Link>
+      </div>
+
+      {/* Middle - Fingerprint SVG */}
+      <motion.div
+        className="flex items-center justify-center"
+        whileHover={{ scale: 1.1 }}
+      >
+        <BiFingerprint className="w-16 h-15 text-purple-400" />
+      </motion.div>
+
+      {/* Right Side - Get Started Button */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="relative group"
+      >
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity" />
+        <button
+          onClick={() => document.getElementById('Upload')?.scrollIntoView({ behavior: 'smooth' })}
+          className="relative bg-gradient-to-r from-purple-600 to-pink-500 px-6 py-3 rounded-xl text-md font-semibold hover:shadow-xl transition-all"
+        >
+          Get Started
+        </button>
+      </motion.div>
+    </div>
+  </div>
+</nav>
       {/* Animated Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <div className="absolute inset-0 opacity-[0.02]" style={{
@@ -98,37 +145,94 @@ export default function Home() {
               className="inline-block relative group"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl blur opacity-30 group-hover:opacity-50 transition-opacity" />
-              <button className="relative bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-2xl transition-all">
-                Start Free Trial
+              <button 
+                onClick={() => document.getElementById('Upload')?.scrollIntoView({ behavior: 'smooth' })}
+                className="relative bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-2xl transition-all"
+              >
+                Get Started!
               </button>
             </motion.div>
           </motion.div>
 
-          {/* 3D Fingerprint Visualization */}
-          <motion.div
-            className="mx-auto mt-24 relative w-full max-w-[800px] h-[500px]"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.4 }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 blur-3xl rounded-[40%]" />
-            <div className="relative z-10 h-full w-full perspective-1000">
-              <motion.div
-                className="h-full w-full preserve-3d"
-                animate={{ rotateY: 15, rotateX: -5 }}
-                transition={{ duration: 20, repeat: Infinity, repeatType: 'mirror' }}
-              >
-                <FingerprintSVG className="absolute inset-0 text-purple-300/80" />
-                <FingerprintSVG className="absolute inset-0 text-purple-400/30 [transform:translateZ(40px)]" />
-                <FingerprintSVG className="absolute inset-0 text-pink-400/20 [transform:translateZ(80px)]" />
-              </motion.div>
-            </div>
-          </motion.div>
         </div>
       </section>
 
+{/* Workflow Section */}
+<section className="relative z-10">
+  <div className="container mx-auto px-4 py-24">
+    <motion.div 
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
+      className="max-w-5xl mx-auto"
+    >
+      <div className="relative">
+        {/* Center vertical line */}
+        <motion.div
+          className="absolute left-1/2 transform -translate-x-1/2 top-0 h-full w-1 bg-gradient-to-b from-purple-500 to-pink-500 rounded-full"
+          initial={{ scaleY: 0 }}
+          whileInView={{ scaleY: 1 }}
+          transition={{ duration: 1.5, ease: "circOut" }}
+        />
+
+        {/* Workflow steps */}
+        <div className="mt-10 mb-10 space-y-50">
+          {[
+            { 
+              icon: <FiUpload className="w-8 h-8" />,
+              title: "Upload Evidence",
+              description: "Securely submit partial prints or database archives",
+              color: "from-purple-500 to-pink-500"
+            },
+            { 
+              icon: <FiZap className="w-8 h-8" />,
+              title: "AI Reconstruction",
+              description: "Generative networks restore missing patterns",
+              color: "from-pink-500 to-purple-500"
+            },
+            { 
+              icon: <BiFingerprint className="w-8 h-8" />,
+              title: "Get Results",
+              description: "Download reconstructed prints & matching reports",
+              color: "from-purple-500 to-indigo-500"
+            }
+          ].map((step, i) => {
+            const isLeft = i % 2 === 0;
+            return (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.2, duration: 0.8 }}
+                className={`relative flex items-center gap-8 ${
+                  isLeft ? "justify-start" : "justify-end"
+                }`}
+              >
+                <div className={`w-1/2 ${isLeft ? "pr-12 text-right" : "pl-12 text-left"} space-y-3`}>
+                  <div className={`relative z-10`}>
+                    <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-xl`}>
+                      <motion.div whileHover={{ scale: 1.1 }} className="text-white">
+                        {step.icon}
+                      </motion.div>
+                    </div>
+                    <h3 className="text-2xl font-bold bg-gradient-to-r from-purple-300 to-pink-300 bg-clip-text text-transparent">
+                      {step.title}
+                    </h3>
+                    <p className="text-purple-200/80">{step.description}</p>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </motion.div>
+  </div>
+</section>
+
+
       {/* Upload Sections */}
-      <section className="container mx-auto px-4 py-16 relative z-10">
+      <section id= "Upload" className="container mx-auto px-4 py-16 relative z-10">
         <div className="grid md:grid-cols-2 gap-8">
           {[['Database', FiDatabase], ['Partial', BiFingerprint]].map(([type, Icon], i) => (
             <motion.div
@@ -162,8 +266,17 @@ export default function Home() {
         </div>
       </section>
 
+<div className="flex justify-center items-center">
+  <Link href="/results">
+  <button className="relative bg-gradient-to-r from-purple-600 to-pink-500 px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-2xl transition-all cursor-pointer">
+    Upload
+  </button>
+  </Link>
+</div>
+
+
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-20 relative z-10">
+      <section className="container mx-auto px-4 py-20 relative z-10 mt-28">
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -198,6 +311,26 @@ export default function Home() {
           ))}
         </motion.div>
       </section>
+
+      {/* Footer */}
+<footer className="relative z-10 bg-gray-950 border-t border-purple-500/20 mt-28">
+  <div className="container mx-auto px-6 py-8 flex flex-col items-center text-center text-purple-100 text-sm space-y-4">
+    <div>
+      <span className="font-semibold text-purple-300 text-base">
+        © {new Date().getFullYear()} Reconstructify AI
+      </span> — All rights reserved.
+    </div>
+    <div className="flex flex-wrap gap-4 justify-center text-purple-400">
+      <Link href="/privacy" className="hover:text-purple-200 transition-colors">Privacy Policy</Link>
+      <span>|</span>
+      <Link href="/terms" className="hover:text-purple-200 transition-colors">Terms of Service</Link>
+      <span>|</span>
+      <Link href="/contact" className="hover:text-purple-200 transition-colors">Contact</Link>
+    </div>
+  </div>
+</footer>
+
+
     </div>
   );
 }
