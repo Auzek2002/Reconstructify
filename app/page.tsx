@@ -58,15 +58,23 @@ export default function Home() {
       if (!response.ok) throw new Error('Upload failed');
       
       const { id } = await response.json();
-      const pyRes = await fetch('http://localhost:8000/process', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
-      });
-    if (!pyRes.ok) throw new Error('Processing API failed');
-    const pyResult = await pyRes.json();
-    console.log('Python API result:', pyResult);
-    router.push(`/results?id=${id}`);
+    const imgRes = await fetch('http://localhost:8000/process', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    });
+    if (!imgRes.ok) throw new Error('Processing API failed');
+
+       const matchRes = await fetch(`http://localhost:8000/match/${id}`);
+      if (!matchRes.ok) throw new Error('Match API failed');
+      const matchBlob = await matchRes.blob();
+      const matchUrl  = URL.createObjectURL(matchBlob);
+
+    const blob = await imgRes.blob();
+    const blobUrl = URL.createObjectURL(blob);
+    const encodedBlobUrl = encodeURIComponent(blobUrl);
+    router.push(`/results?id=${id}&imageUrl=${encodedBlobUrl}&matchUrl=${encodeURIComponent(matchUrl)}`);
+    // router.push(`/results?id=${id}`);
     } catch (error) {
       console.error('Upload error:', error);
       alert('Upload failed. Please try again.');
@@ -134,7 +142,7 @@ export default function Home() {
       </section>
 
       {/* WORKFLOW */}
-      <section className="relative z-10">
+      <section className="relative z-10 mt-10">
         <div className="container mx-auto px-4 py-24">
           <div className="relative max-w-5xl mx-auto">
             <div
