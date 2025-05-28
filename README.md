@@ -33,6 +33,9 @@ cd Reconstructify
 npm run dev
 ```
 
+## Model Notebook:
+[Open Notebook in Colab](https://colab.research.google.com/drive/1Ya6O2ive9Ld5t3PlwE-d1pAAZojFrOSn)
+
 ## Project Demo:
 
 https://github.com/user-attachments/assets/44c66697-77b1-4162-b7d3-0a840bed4856
