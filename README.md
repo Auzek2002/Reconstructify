@@ -23,6 +23,7 @@
 
 - Python 3.8+
 - pip
+- npm
 
 ### Installation
 
